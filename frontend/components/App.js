@@ -1,6 +1,7 @@
 import React from "react";
 import axios from "axios";
 import Form from "./Form";
+import TodoList from "./TodoList";
 
 const URL = "http://localhost:9000/api/todos";
 
@@ -55,15 +56,34 @@ export default class App extends React.Component {
     }
   };
 
+  completeTask = (e, id) => {
+    e.preventDefault();
+
+    try {
+      const updateTask = async () => {
+        const response = await axios({
+          method: "PATCH",
+          url: `${URL}/${id}`,
+          data: {
+            id: id,
+          },
+        });
+        console.log(response);
+
+        this.setState({ ...this.state, ["todos"]: [...this.state.todos.map((todo) => (todo.id === id ? (todo = response.data.data) : todo))] });
+      };
+      updateTask();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   render() {
     return (
       <>
         <h2 className="todos-header">ToDos:</h2>
         <section className="todos">
-          {this.state.todos &&
-            this.state.todos.map((todo, index) => {
-              return <p key={index}>{`${todo && todo.name} ${todo && todo.completed === true ? "✔" : ""}`}</p>;
-            })}
+          <TodoList todos={this.state.todos} completeTask={this.completeTask} />
           <Form todo={this.state.todo} changeToDo={this.changeToDo} addTask={this.addTask} />
         </section>
       </>
