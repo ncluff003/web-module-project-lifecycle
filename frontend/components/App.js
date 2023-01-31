@@ -47,10 +47,11 @@ export default class App extends React.Component {
             name: this.state.todo.name,
           },
         });
-
-        this.setState({ ...this.state, ["todos"]: [...this.state.todos, [response.data.data]] });
+        console.log(response.data.data);
+        this.setState({ ...this.state, ["todos"]: [...this.state.todos, response.data.data], ["todo"]: { name: "" } });
       };
       submitTask();
+      // this.setState({ ...this.state, ["todo"]: [...this.state.todo, { name: "" }] });
     } catch (error) {
       console.error(error);
     }
@@ -82,6 +83,19 @@ export default class App extends React.Component {
     e.preventDefault();
     this.setState({ ...this.state, ["todos"]: [...this.state.todos.filter((todo) => todo.completed === false)] });
   };
+
+  // componentDidUpdate() {
+  //   const getToDos = async () => {
+  //     const response = await axios({
+  //       method: "GET",
+  //       url: URL,
+  //     });
+  //     console.log(response.data);
+  //     this.setState({ ...this.state, ["todos"]: response.data.data });
+  //   };
+  //   getToDos();
+  //   console.log(this.state);
+  // }
 
   render() {
     return (
