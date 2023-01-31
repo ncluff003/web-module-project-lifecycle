@@ -78,6 +78,11 @@ export default class App extends React.Component {
     }
   };
 
+  clearCompleted = (e) => {
+    e.preventDefault();
+    this.setState({ ...this.state, ["todos"]: [...this.state.todos.filter((todo) => todo.completed === false)] });
+  };
+
   render() {
     return (
       <>
@@ -85,6 +90,7 @@ export default class App extends React.Component {
         <section className="todos">
           <TodoList todos={this.state.todos} completeTask={this.completeTask} />
           <Form todo={this.state.todo} changeToDo={this.changeToDo} addTask={this.addTask} />
+          <button onClick={(e) => this.clearCompleted(e)}>Clear Completed</button>
         </section>
       </>
     );
